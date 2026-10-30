@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16
+    container_name: insurance_crm_db
+    environment:
+      POSTGRES_USER: Postgres
+      POSTGRES_PASSWORD: Yafetgetachew@1234
+      POSTGRES_DB: insurance_crm
+    ports:
+      - "5435:5432"
+    volumes:
+      - insurance_crm_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  insurance_crm_data:
