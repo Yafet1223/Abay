@@ -1,15 +1,25 @@
-
 from fastapi import FastAPI, HTTPException
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.core.config import settings
 from app.db.session import engine
+from app.api.customer import router as customer_router
+from app.api.user import router as user_router
 
 
 app = FastAPI(
     title=settings.app_name,
     debug=settings.debug,
+)
+
+app.include_router(
+    customer_router,
+    prefix="/api"
+)
+app.include_router(
+    user_router,
+    prefix="/api"
 )
 
 
