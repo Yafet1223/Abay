@@ -6,6 +6,11 @@ from app.core.config import settings
 from app.db.session import engine
 from app.api.customer import router as customer_router
 from app.api.user import router as user_router
+from app.api.insurance_product import router as insurance_product_router
+from app.api.insurance_package import router as insurance_package_router
+from app.api.insurance_policy import router as insurance_policy_router
+from app.api.insurance_claim import router as insurance_claim_router
+from app.api.payment import router as payment_router
 
 
 app = FastAPI(
@@ -13,14 +18,14 @@ app = FastAPI(
     debug=settings.debug,
 )
 
-app.include_router(
-    customer_router,
-    prefix="/api"
-)
-app.include_router(
-    user_router,
-    prefix="/api"
-)
+# Register all API routers
+app.include_router(customer_router, prefix="/api")
+app.include_router(user_router, prefix="/api")
+app.include_router(insurance_product_router, prefix="/api")
+app.include_router(insurance_package_router, prefix="/api")
+app.include_router(insurance_policy_router, prefix="/api")
+app.include_router(insurance_claim_router, prefix="/api")
+app.include_router(payment_router, prefix="/api")
 
 
 @app.get("/")

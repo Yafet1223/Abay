@@ -2,7 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.payment import Payment
-from app.schemas.payment import PaymentCreate, PaymentUpdate
+from app.schemas.insurance_payment import PaymentCreate, PaymentUpdate
 
 
 class PaymentRepository:
@@ -45,7 +45,6 @@ class PaymentRepository:
         payment: Payment,
         payment_data: PaymentUpdate
     ) -> Payment:
-
         update_data = payment_data.model_dump(exclude_unset=True)
 
         for field, value in update_data.items():
@@ -61,7 +60,6 @@ class PaymentRepository:
         self,
         transaction_reference: str
     ) -> Payment | None:
-
         statement = select(Payment).where(
             Payment.transaction_reference == transaction_reference
         )

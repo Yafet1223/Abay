@@ -14,8 +14,20 @@ class InsuranceClaimRepository:
         self.db = db
 
     # Create an insurance claim
-    def create(self, claim_data: InsuranceClaimCreate) -> InsuranceClaim:
-        claim = InsuranceClaim(**claim_data.model_dump())
+    def create(
+        self,
+        claim_data: InsuranceClaimCreate,
+        claim_number: str | None = None
+    ) -> InsuranceClaim:
+        if not claim_number:
+            from datetime import date
+            from uuid import uuid4
+            claim_number = f"CLM-{date.today().year}-{uuid4().hex[:8].upper()}"
+
+        claim = InsuranceClaim(
+            **claim_data.model_dump(),
+            claim_number=claim_number
+        )
 
         self.db.add(claim)
         self.db.commit()
@@ -55,7 +67,6 @@ class InsuranceClaimRepository:
         claim: InsuranceClaim,
         claim_data: InsuranceClaimUpdate
     ) -> InsuranceClaim:
-
         update_data = claim_data.model_dump(exclude_unset=True)
 
         for field, value in update_data.items():
@@ -65,4 +76,3 @@ class InsuranceClaimRepository:
         self.db.refresh(claim)
 
         return claim
-        
